@@ -1,10 +1,12 @@
 import { Router } from "express";
 import { MongoClient } from "mongodb";
+import dotenv from "dotenv";
+
+dotenv.config({path: ['.env.local']});
 
 //create a router
 const router = Router();
-const url =
-  "mongodb+srv://todo-api:0VNOfTbGwAG0SVdI@webdev-theo.nrbbku7.mongodb.net/?retryWrites=true&w=majority&appName=webdev-theo";
+const url = process.env.MONGO_URI;
 const client = new MongoClient(url);
 const todoDb = 'todo-db';
 const todoCollection = 'todos';
@@ -52,11 +54,11 @@ router.delete("/todos", async(req, res) => {
  //Get access to todos collection in the database
  const collection = db.collection(todoCollection);
  //Get all todos from todos collection
- const deleteResult = await collection.deleteMany(req.body);
+ const deleteManyResult = await collection.deleteMany({});
  //disconnect the mongo client
  await client.close();
  //return response
- res.json (deleteResult);
+ res.json (deleteManyResult);
 });
 
 
